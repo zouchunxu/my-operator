@@ -145,7 +145,7 @@ func main() {
 	var kubeconfig string
 	var master string
 
-	flag.StringVar(&kubeconfig, "kubeconfig", "", "absolute path to the kubeconfig file")
+	flag.StringVar(&kubeconfig, "kubeconfig", "/Users/zouchunxu/.kube/config", "absolute path to the kubeconfig file")
 	flag.StringVar(&master, "master", "", "master url")
 	flag.Parse()
 
