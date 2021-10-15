@@ -138,6 +138,7 @@ func (c *Controller) Run(workers int, stopCh chan struct{}) {
 
 func (c *Controller) runWorker() {
 	for c.processNextItem() {
+		fmt.Println("done")
 	}
 }
 
