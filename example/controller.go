@@ -6,6 +6,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/kubernetes/scheme"
 	typedcorev1 "k8s.io/client-go/kubernetes/typed/core/v1"
+	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
 )
@@ -35,7 +36,6 @@ const (
 	MessageResourceSynced = "Network synced successfully"
 )
 
-
 func NewController(kubeclientset kubernetes.Interface) *Controller {
 	eventBroadcaster := record.NewBroadcaster()
 	eventBroadcaster.StartLogging(glog.Infof)
@@ -47,19 +47,19 @@ func NewController(kubeclientset kubernetes.Interface) *Controller {
 		recorder:      recorder,
 	}
 	glog.Info("Setting up event handlers")
-	//networkInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
-	//	AddFunc: controller.enqueueNetwork,
-	//	UpdateFunc: func(old, new interface{}) {
-	//		oldNetwork := old.(*samplecrdv1.Network)
-	//		newNetwork := new.(*samplecrdv1.Network)
-	//		if oldNetwork.ResourceVersion == newNetwork.ResourceVersion {
-	//			// Periodic resync will send update events for all known Networks.
-	//			// Two different versions of the same Network will always have different RVs.
-	//			return
-	//		}
-	//		controller.enqueueNetwork(new)
-	//	},
-	//	DeleteFunc: controller.enqueueNetworkForDelete,
-	//})
+	networkInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
+		AddFunc: controller.enqueueNetwork,
+		UpdateFunc: func(old, new interface{}) {
+			oldNetwork := old.(*samplecrdv1.Network)
+			newNetwork := new.(*samplecrdv1.Network)
+			if oldNetwork.ResourceVersion == newNetwork.ResourceVersion {
+				// Periodic resync will send update events for all known Networks.
+				// Two different versions of the same Network will always have different RVs.
+				return
+			}
+			controller.enqueueNetwork(new)
+		},
+		DeleteFunc: controller.enqueueNetworkForDelete,
+	})
 	return controller
 }
