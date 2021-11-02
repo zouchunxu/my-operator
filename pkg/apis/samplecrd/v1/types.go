@@ -25,7 +25,6 @@ type Network struct {
 	Spec NetworkSpec `json:"spec"`
 }
 
-
 // NetworkSpec is the spec for a Network resource
 type NetworkSpec struct {
 	// Cidr and Gateway are example custom spec fields
