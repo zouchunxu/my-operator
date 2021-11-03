@@ -4,7 +4,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"my-operator/pkg/apis/samplecrd"
+	"zouchunxu/my-operator/pkg/apis/samplecrd"
 )
 
 // GroupVersion is the identifier for the API which includes
