@@ -18,7 +18,6 @@ var (
 
 func main() {
 	flag.Parse()
-
 	// set up signals so we handle the first shutdown signal gracefully
 	stopCh := signals.SetupSignalHandler()
 
